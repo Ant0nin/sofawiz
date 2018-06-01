@@ -43,14 +43,12 @@ sub_genclass() {
 	cat "$progdir/templates/sofa_licence" > $cpp_file
 	cat "$progdir""/templates/sofa_licence" > $header_file
 
-	# if template class...
+	# if new class is template class...
 	if [ -n "$templateArgs" ]
 	then
 		typenameTemplateArgs=" typename $(echo "$templateArgs" | sed 's/ /, typename /g' )"
 		templateArgs=$(echo $templateArgs | sed 's/ /, /g')
-		motherTemplateArgs=$(echo $motherTemplateArgs | sed 's/ /, /g')
 		templateArgsCount=$(echo $templateArgs | wc -w)
-		motherTemplateArgsCount=$(echo $motherTemplateArgs | wc -w)
 
 		cat "$progdir""/templates/component_templateclass.h" > $header_file
 		cat "$progdir/templates/component_templateclass.cpp" > $cpp_file
@@ -66,7 +64,6 @@ sub_genclass() {
 
 		sed -i "s/_typenameTemplateArgs_/$typenameTemplateArgs/g" $header_file
 		sed -i "s/_templateArgs_/$templateArgs/g" $header_file
-		sed -i "s/_motherTemplateArgs_/$motherTemplateArgs/g" $header_file
 		
 		if [ $templateArgsCount -eq '1' ]
 		then
@@ -75,6 +72,21 @@ sub_genclass() {
 			sed -i "s/_templateArgsCount_/$templateArgsCount/g" $header_file
 		fi
 
+	else
+		cat "$progdir""/templates/component_class.h" > $header_file
+		cat "$progdir/templates/component_class.cpp" > $cpp_file
+	fi
+
+	motherTemplateArgs=$(echo $motherTemplateArgs | sed 's/ /, /g')
+	motherTemplateArgsCount=$(echo $motherTemplateArgs | wc -w)
+
+	# if mother class is template class...
+	if [ "$motherTemplateArgs" ]
+	then
+		sed -i "s/_motherMacroDecl_/SOFA_TEMPLATE_motherTemplateArgsCount_(_MotherClass_, _motherTemplateArgs_)/g" $header_file
+		sed -i "s/_motherTemplateArgs_/$motherTemplateArgs/g" $header_file
+		sed -i "s/_MotherFullName_/$motherfullclassname/g" $header_file
+
 		if [ $motherTemplateArgsCount -eq '1' ]
 		then
 			sed -i "s/_motherTemplateArgsCount_//g" $header_file
@@ -82,8 +94,8 @@ sub_genclass() {
 			sed -i "s/_motherTemplateArgsCount_/$motherTemplateArgsCount/g" $header_file
 		fi
 	else
-		cat "$progdir""/templates/component_class.h" > $header_file
-		cat "$progdir/templates/component_class.cpp" > $cpp_file
+		sed -i "s/_motherMacroDecl_/_MotherClass_/g" $header_file
+		sed -i "s/_MotherFullName_/_MotherClass_/g" $header_file
 	fi
 
 	sed -i "s;_motherLocation_;$motherlocation;g" $header_file
@@ -103,7 +115,6 @@ sub_genclass() {
 	
 	sed -i "/set(HEADER_FILES/a \"$header_file\"" $cmakefile
 	sed -i "/set(SOURCE_FILES/a \"$cpp_file\"" $cmakefile
-
 
 	echo 'Finished!'
 }

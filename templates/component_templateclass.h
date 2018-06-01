@@ -7,11 +7,11 @@
 _namespacebegin_
 
    template<_typenameTemplateArgs_ >
-   class _ComponentName_ : public _MotherClass_<_motherTemplateArgs_>
+   class _ComponentName_ : public _MotherFullName_ 
    {
     public:
 
-     SOFA_CLASS( SOFA_TEMPLATE_templateArgsCount_(_ComponentName_, _templateArgs_), SOFA_TEMPLATE_motherTemplateArgsCount_(_MotherClass_, _motherTemplateArgs_) );
+     SOFA_CLASS( SOFA_TEMPLATE_templateArgsCount_(_ComponentName_, _templateArgs_), _motherMacroDecl_ );
 
      // TODO: complete class definition
    };
