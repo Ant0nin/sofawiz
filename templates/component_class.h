@@ -2,12 +2,9 @@
 #define SOFA_COMPONENT__COMPONENTTYPE___COMPONENTNAME__H
 
 #include <sofa/core/ObjectFactory.h>
+#include <_motherLocation_.h>
 
-namespace sofa {
-
- namespace component {
-
-  namespace _componenttype_ {
+_namespacebegin_
 
    class _ComponentName_ : public _MotherClass_
    {
@@ -18,8 +15,6 @@ namespace sofa {
      // TODO: complete class definition
    };
 
-  }
- }
-}
+_namespaceend_
 
 #endif

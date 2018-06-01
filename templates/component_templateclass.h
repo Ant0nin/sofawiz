@@ -2,25 +2,20 @@
 #define SOFA_COMPONENT__COMPONENTTYPE___COMPONENTNAME__H
 
 #include <sofa/core/ObjectFactory.h>
+#include <_motherLocation_.h>
 
-namespace sofa {
+_namespacebegin_
 
- namespace component {
-
-  namespace _componenttype_ {
-
-   template<typename DataTypes>
-   class _ComponentName_ : public sofa::component::_componenttype_::_MotherClass_<DataTypes>
+   template<_typenameTemplateArgs_ >
+   class _ComponentName_ : public _MotherClass_<_motherTemplateArgs_>
    {
     public:
 
-     SOFA_CLASS( SOFA_TEMPLATE(_ComponentName_, DataTypes), SOFA_TEMPLATE(sofa::component::_componenttype_::_MotherClass_, DataTypes) );
+     SOFA_CLASS( SOFA_TEMPLATE_templateArgsCount_(_ComponentName_, _templateArgs_), SOFA_TEMPLATE_motherTemplateArgsCount_(_MotherClass_, _motherTemplateArgs_) );
 
      // TODO: complete class definition
    };
 
-  }
- }
-}
+_namespaceend_
 
 #endif
