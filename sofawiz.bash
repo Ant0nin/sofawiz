@@ -7,6 +7,7 @@ subcommand=$1
 sub_help() {
 	echo 'List of existing subcommands:'
 	echo '   genclass cMakefileLocation myClassFolderLocation "my::namespace::MyClass<T...>" motherClassLocation "sofa::namespace::MotherClass<T...>"'
+	echo '   rmclass cMakefileLocation myClassLocation'
 }
 
 sub_genclass() {
@@ -22,8 +23,25 @@ sub_genclass() {
 	classnamespace=$(echo "$fullclassname" | cut -d'<' -f1 | sed 's/::/ /g' | sed 's/.\w*$//')
 	motherclassname=$(echo "$motherfullclassname" | cut -d'<' -f1)
 	motherTemplateArgs=$(echo $motherfullclassname | sed 's/.*<\(.*\)>/\1/g' | sed 's/,/ /g')
+	header_file=$(echo "$destfolder/$classname.h" | sed 's;//;/;g')
+	cpp_file=$(echo "$destfolder/$classname.cpp" | sed 's;//;/;g')
+
+	namespacebegin=''
+	namespaceend=''
+	for word in $(echo "$classnamespace")
+	do
+		namespacebegin+="namespace $word {\n\n"
+		namespaceend+="\} \/\/ $word \n\n"
+	done
+	namespacebegin=$(echo "${namespacebegin: : -4}")
+	namespaceend=$(echo "${namespaceend: : -4}")
 	
 	mkdir -p $destfolder
+	touch $header_file
+	touch $cpp_file
+	
+	cat "$progdir/templates/sofa_licence" > $cpp_file
+	cat "$progdir""/templates/sofa_licence" > $header_file
 
 	# if template class...
 	if [ -n "$templateArgs" ]
@@ -34,20 +52,17 @@ sub_genclass() {
 		templateArgsCount=$(echo $templateArgs | wc -w)
 		motherTemplateArgsCount=$(echo $motherTemplateArgs | wc -w)
 
-		header_file="$destfolder/$classname.h"
-		touch $header_file
-		cat "$progdir""/templates/sofa_licence" > $header_file
 		cat "$progdir""/templates/component_templateclass.h" > $header_file
-
-
-		cpp_file="$destfolder/$classname.cpp"
-		touch $cpp_file
-		cat "$progdir/templates/sofa_licence" > $cpp_file
 		cat "$progdir/templates/component_templateclass.cpp" > $cpp_file
 
-		inl_file="$destfolder/$classname.inl"
+		inl_file=$(echo "$destfolder/$classname.inl" | sed 's;//;/;g')
+		touch $inl_file
 		cat "$progdir/templates/sofa_licence" > $inl_file
 		cat "$progdir/templates/component_templateclass.inl" > $inl_file
+
+		sed -i "s/_ComponentName_/$classname/g" $inl_file
+		sed -i "s/_namespacebegin_/$namespacebegin/g" $inl_file
+		sed -i "s/_namespaceend_/""$namespaceend""/g" $inl_file
 
 		sed -i "s/_typenameTemplateArgs_/$typenameTemplateArgs/g" $header_file
 		sed -i "s/_templateArgs_/$templateArgs/g" $header_file
@@ -67,14 +82,7 @@ sub_genclass() {
 			sed -i "s/_motherTemplateArgsCount_/$motherTemplateArgsCount/g" $header_file
 		fi
 	else
-		header_file="$destfolder/$classname.h"
-		touch $header_file
-		cat "$progdir""/templates/sofa_licence" > $header_file
 		cat "$progdir""/templates/component_class.h" > $header_file
-	
-		cpp_file="$destfolder/$classname.cpp"
-		touch $cpp_file
-		cat "$progdir/templates/sofa_licence" > $cpp_file
 		cat "$progdir/templates/component_class.cpp" > $cpp_file
 	fi
 
@@ -84,27 +92,18 @@ sub_genclass() {
 	sed -i "s/_MotherClass_/$motherclassname/g" $header_file
 	sed -i "s/_componenttype_/$componenttype/g" $header_file
 	sed -i "s/_ComponentName_/$classname/g" $header_file
+	sed -i "s/_namespacebegin_/$namespacebegin/g" $header_file
+	sed -i "s/_namespaceend_/""$namespaceend""/g" $header_file
 
 	sed -i "s/_componenttype_/$componenttype/g" $cpp_file
 	sed -i "s/_ComponentName_/$classname/g" $cpp_file
 	sed -i "s/_ComponentNameClass/$classname/g" $cpp_file
+	sed -i "s/_namespacebegin_/$namespacebegin/g" $cpp_file
+	sed -i "s/_namespaceend_/""$namespaceend""/g" $cpp_file
 	
 	sed -i "/set(HEADER_FILES/a \"$header_file\"" $cmakefile
 	sed -i "/set(SOURCE_FILES/a \"$cpp_file\"" $cmakefile
 
-	namespacebegin=''
-	namespaceend=''
-	for word in $(echo "$classnamespace")
-	do
-		namespacebegin+="namespace $word {\n\n"
-		namespaceend+="\} \/\/ $word \n\n"
-	done
-	namespacebegin=$(echo "${namespacebegin: : -4}")
-	namespaceend=$(echo "${namespaceend: : -4}")
-	sed -i "s/_namespacebegin_/$namespacebegin/g" $header_file
-	sed -i "s/_namespacebegin_/$namespacebegin/g" $cpp_file
-	sed -i "s/_namespaceend_/""$namespaceend""/g" $header_file
-	sed -i "s/_namespaceend_/""$namespaceend""/g" $cpp_file
 
 	echo 'Finished!'
 }

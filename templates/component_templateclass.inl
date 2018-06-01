@@ -1,4 +1,4 @@
-#include "_componentName_.h"
+#include "_ComponentName_.h"
 
 _namespacebegin_
 
