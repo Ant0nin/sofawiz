@@ -2,6 +2,6 @@
 
 _namespacebegin_
 
-	// TODO: complete class...
+// TODO: complete class...
 
 _namespaceend_

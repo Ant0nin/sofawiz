@@ -2,10 +2,10 @@
 
 _namespacebegin_
 
-   SOFA_DECL_CLASS(_ComponentName_)
+SOFA_DECL_CLASS(_ComponentName_)
 
-   int _ComponentNameClass_ = sofa::core::RegisterObject("_ComponentDescription_").add<_ComponentName_>(true);
+int _ComponentNameClass_ = sofa::core::RegisterObject("_ComponentDescription_").add<_ComponentName_>(true);
 
-   // TODO: complete class behavior
+// TODO: complete class behavior
 
 _namespaceend_

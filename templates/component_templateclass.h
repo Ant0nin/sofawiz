@@ -6,15 +6,15 @@
 
 _namespacebegin_
 
-   template<_typenameTemplateArgs_ >
-   class _ComponentName_ : public _MotherFullName_ 
-   {
-    public:
+template<_typenameTemplateArgs_ >
+class _ComponentName_ : public _MotherFullName_ 
+{
+public:
 
-     SOFA_CLASS( SOFA_TEMPLATE_templateArgsCount_(_ComponentName_, _templateArgs_), _motherMacroDecl_ );
+SOFA_CLASS( SOFA_TEMPLATE_templateArgsCount_(_ComponentName_, _templateArgs_), _motherMacroDecl_ );
 
-     // TODO: complete class definition
-   };
+// TODO: complete class definition
+};
 
 _namespaceend_
 

@@ -6,14 +6,14 @@
 
 _namespacebegin_
 
-   class _ComponentName_ : public _MotherFullName_
-   {
-    public:
+class _ComponentName_ : public _MotherFullName_
+{
+public:
 
-     SOFA_CLASS( _ComponentName_, _motherMacroDecl_ );
+SOFA_CLASS( _ComponentName_, _motherMacroDecl_ );
 
-     // TODO: complete class definition
-   };
+// TODO: complete class definition
+};
 
 _namespaceend_
 
