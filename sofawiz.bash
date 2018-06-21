@@ -109,7 +109,7 @@ sub_genclass() {
 
 	sed -i "s/_componenttype_/$componenttype/g" $cpp_file
 	sed -i "s/_ComponentName_/$classname/g" $cpp_file
-	sed -i "s/_ComponentNameClass/$classname/g" $cpp_file
+	sed -i "s/_ComponentNameClass_/$classname""Class/g" $cpp_file
 	sed -i "s/_namespacebegin_/$namespacebegin/g" $cpp_file
 	sed -i "s/_namespaceend_/""$namespaceend""/g" $cpp_file
 	
