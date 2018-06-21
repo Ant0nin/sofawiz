@@ -31,7 +31,7 @@ sub_genclass() {
 	for word in $(echo "$classnamespace")
 	do
 		namespacebegin+="namespace $word {\n\n"
-		namespaceend+="\} \/\/ $word \n\n"
+		namespaceend="\} \/\/ $word \n\n$namespaceend"
 	done
 	namespacebegin=$(echo "${namespacebegin: : -4}")
 	namespaceend=$(echo "${namespaceend: : -4}")
