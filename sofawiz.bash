@@ -40,8 +40,8 @@ sub_genclass() {
 	touch $header_file
 	touch $cpp_file
 	
-	cat "$progdir/templates/sofa_licence" > $cpp_file
-	cat "$progdir""/templates/sofa_licence" > $header_file
+	#cat "$progdir/templates/sofa_licence" > $cpp_file
+	#cat "$progdir""/templates/sofa_licence" > $header_file
 
 	# if new class is template class...
 	if [ -n "$templateArgs" ]
