@@ -33,8 +33,8 @@ sub_genclass() {
 		namespacebegin+="namespace $word {\n"
 		namespaceend="\} \/\/ $word \n$namespaceend"
 	done
-	namespacebegin=$(echo "${namespacebegin: : -4}")
-	namespaceend=$(echo "${namespaceend: : -4}")
+	namespacebegin=$(echo "${namespacebegin: : -2}")
+	namespaceend=$(echo "${namespaceend: : -3}")
 	
 	mkdir -p $destfolder
 	touch $header_file
